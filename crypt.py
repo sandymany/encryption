@@ -1,5 +1,5 @@
-from Crypto.Cipher import PKCS1_OAEP
-from Crypto.PublicKey import RSA
+from Cryptodome.Cipher import PKCS1_OAEP
+from Cryptodome.PublicKey import RSA
 from binascii import hexlify
 
 def generateNewKeys():
@@ -51,37 +51,44 @@ def decrypt(message):
         return(decrypted_message.decode())
     except:
         print("Something went wrong. Check if the file \'private_pem.pem\' exists. If not, select option [4] to set it up.")
+while True:
+    print("\n[1]ENCRYPT\n[2]DECRYPT\n[3]SET NEW ENCRYPTION KEY\n[4]GENERATE KEYS\n[5]MY PUBLIC KEY?\n[6]HELP\n[0]EXIT")
+    inp=int(input())
 
-print("\n[1]ENCRYPT\n[2]DECRYPT\n[3]SET NEW ENCRYPTION KEY\n[4]GENERATE KEYS\n[5]MY PUBLIC KEY?\n[6]HELP\n")
-inp=int(input())
+    if inp==1:
+        print("Message: ",end='')
+        inp=input()
+        print("encrypting...")
+        print("Encrypted message:",encrypt(inp))
 
-if inp==1:
-    print("Message: ",end='')
-    inp=input()
-    print("encrypting...")
-    print("Encrypted message:",encrypt(inp))
+    elif inp==2:
+        print("Message to decrypt: ",end='')
+        inp=input()
+        print("Processing...")
+        print("Decrypted message:",decrypt(inp))
 
-elif inp==2:
-    print("Message to decrypt: ",end='')
-    inp=input()
-    print("Processing...")
-    print("Decrypted message:",decrypt(inp))
+    elif inp==3:
+        print("Paste new encryption key to be used: ",end='')
+        inp=input()
+        setEncryptionKey(inp)
+        print("Encryption key has been updated.")
 
-elif inp==3:
-    print("Paste new encryption key to be used: ",end='')
-    inp=input()
-    setEncryptionKey(inp)
-    print("Encryption key has been updated.")
+    elif inp==4:
+        print("Generating your new pair of keys...")
+        new_public_key=generateNewKeys()
+        print("Send your peer the following key:")
+        #print(new_public_key)
+        print(getPublicKey())
 
-elif inp==4:
-    print("Generating your new pair of keys...")
-    new_public_key=generateNewKeys()
-    print("Send your peer the following key:")
-    #print(new_public_key)
-    print(getPublicKey())
+    elif inp==5:
+        print("YOUR PUBLIC KEY:",getPublicKey())
 
-elif inp==5:
-    print("YOUR PUBLIC KEY:",getPublicKey())
+    elif inp==6:
+        print("Steps to useability: \n\t1)Generate a key - option [4]\n\t2)All participants shall include the generated key under option [3]\n\t3)Enjoy your critography")
 
-else:
-    print("fck u")
+    elif inp==0:
+        print("Exiting")
+        break
+
+    else:
+        print("fck u")
